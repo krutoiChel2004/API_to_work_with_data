@@ -18,6 +18,10 @@ def extract_frames(video_path, save_frames_path):
 
 async def cutting_video_into_frames_service(video: UploadFile):
     try:
+        video_path = "src/video/uploaded_videos/"
+        if not os.path.exists(video_path):
+            os.makedirs(video_path)
+        
         video_path = f"src/video/uploaded_videos/{video.filename}"
         with open(video_path, "wb") as buffer:
             buffer.write(await video.read())
@@ -27,6 +31,10 @@ async def cutting_video_into_frames_service(video: UploadFile):
             os.makedirs(save_frames_path)
 
         extract_frames(video_path, save_frames_path)
+
+        save_zip_path = "src/video/zip"
+        if not os.path.exists(save_zip_path):
+            os.makedirs(save_zip_path)
 
         zip_filename = "src/video/zip/frames.zip"
         with zipfile.ZipFile(zip_filename, "w") as zipf:
